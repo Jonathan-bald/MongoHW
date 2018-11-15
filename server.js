@@ -15,7 +15,8 @@ var db = require("./models");
 var PORT = process.env.PORT || 3000;
 
 var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
-mongoose.connect(MONGODB_URI);
+
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true });
 
 // Initialize Express
 var app = express();
@@ -33,59 +34,41 @@ app.use(bodyParser.urlencoded({ extended: false }));
 // Use express.static to serve the public folder as a static directory
 app.use(express.static("public"));
 
-// Set mongoose to leverage built in JavaScript ES6 Promises
-// Connect to the Mongo DB
-mongoose.Promise = Promise;
 
 
-// Routes
-
-// A GET route for scraping the echojs website
 app.get("/scrape", function(req, res) {
   // First, we grab the body of the html with request
   axios.get("https://www.nytimes.com/").then(function(response) {
     // Then, we load that into cheerio and save it to $ for a shorthand selector
     var $ = cheerio.load(response.data);
+
     // Now, we grab every h2 within an article tag, and do the following:
-    $("article.story").each(function(i, element) {
+    $("article h2").each(function(i, element) {
       // Save an empty result object
       var result = {};
 
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this)
-        .children("h2.story-heading")
-        .children("a")
+        .children()
         .text();
       result.link = $(this)
-        .children("h2.story-heading")
         .children("a")
         .attr("href");
-      result.summary = $(this)
-        .children("p.summary")
-        .text();
-
-      var flag;
-
-      db.Article.findOne({title: result.title}).then(function (dbFinder) {
-        if (dbFinder) {
-          return;
-        }
-        else {
-          db.Article
-            .create(result)
-            .then(function(dbArticle) {
-              res.send("Scrape Complete");
-            })
-            .catch(function(err) {
-              res.json(err);
-            });
-        }
-
-      });
 
       // Create a new Article using the `result` object built from scraping
+      db.Article.create(result)
+        .then(function(dbArticle) {
+          // View the added result in the console
+          console.log(dbArticle);
+        })
+        .catch(function(err) {
+          // If an error occurred, log it
+          console.log(err);
+        });
     });
-    res.redirect("/");
+
+    // Send a message to the client
+    res.send("Scrape Complete");
   });
 });
 
