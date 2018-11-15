@@ -1,0 +1,77 @@
+.headline:link    {
+  /* Applies to all unvisited links */
+  text-decoration:  none;
+  font-weight:      bold;
+  color:            white;
+  } 
+.headline:visited {
+  /* Applies to all visited links */
+  text-decoration:  none;
+  font-weight:      bold;
+  color:            white;
+  } 
+.headline:hover   {
+  /* Applies to links under the pointer */
+  text-decoration:  underline;
+  font-weight:      bold;
+  color: white;
+  } 
+.headline:active  {
+  /* Applies to activated links */
+  text-decoration:  underline;
+  font-weight:      bold;
+  color: white;
+  } 
+
+.jumbotron {
+	background-image: url("https://static.pexels.com/photos/443383/pexels-photo-443383.jpeg");
+	color: white;
+	height: 400px;
+}
+
+.top-title {
+	margin-top: 100px;
+}
+
+.sub-title {
+	font-family: "Times New Roman", Times, serif;
+	font-size: 50px;
+}
+
+.empty-articles {
+	background-color: orange;
+	padding: 0px;
+	height: 100px;
+	border-style: solid;
+	border-color: white;
+	border-width: 10px;
+}
+
+.modal-header {
+	background-color: #428bca;
+	color: white;
+}
+
+.comment-box {
+	width: 100%;
+	height: 100px;
+}
+
+.comment {
+	color: #428bca;
+	width: 100%;
+	margin-bottom: 15px;
+	font-size: 16px;
+	word-wrap: break-word;
+}
+
+.deletecomment {
+	font-color: black;
+	float: right;
+	margin-right: 5px;
+}
+
+.close {
+	color: white;
+	opacity: 1;
+}
